@@ -1,0 +1,13 @@
+{
+	"compilerOptions": {
+		"noEmit": true,
+		"target": "esnext",
+		"moduleResolution": "node",
+		"strict": true,
+		"verbatimModuleSyntax": true,
+		"noUnusedLocals": true,
+	},
+	"include": [
+		"src/**/*.ts"
+	]
+}
