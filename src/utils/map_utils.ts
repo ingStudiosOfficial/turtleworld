@@ -1,4 +1,4 @@
-import type { KaboomCtx } from "kaboom";
+import type { KAPLAYCtx } from "kaplay";
 import { ColorTheme } from "../theme/theme";
 import type { RGB } from "../theme/theme";
 
@@ -64,7 +64,7 @@ export function determineColor(type: TileType): RGB {
     }
 }
 
-export function renderVisibleTiles(k: KaboomCtx, tileSize: number, map: TileType[][]) {
+export function renderVisibleTiles(k: KAPLAYCtx, tileSize: number, map: TileType[][]) {
     k.destroyAll('tile');
 
     const cam = k.camPos();
@@ -90,8 +90,9 @@ export function renderVisibleTiles(k: KaboomCtx, tileSize: number, map: TileType
                 k.area(),
                 tile === TileType.Tree ? k.body({ isStatic: true }) : null,
                 'tile',
-                tile,
-            ]);
+                { type: tile }, 
+                k.z(1),
+            ].filter(Boolean));
         }
     }
 }

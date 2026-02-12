@@ -1,14 +1,16 @@
-import type { KaboomCtx } from "kaboom";
+import type { KAPLAYCtx } from "kaplay";
 import type { TilePos } from "../types/Tile";
-import type { GameObj } from "kaboom";
+import type { GameObj } from "kaplay";
 import type { RGB } from "../theme/theme";
 
 export default class Character {
     protected character: GameObj;
+    public health = 100;
     protected tileSize: number;
     protected grassTiles: TilePos[];
 
-    constructor(k: KaboomCtx, color: RGB, tileSize: number, grassTiles: TilePos[]) {
+    constructor(k: KAPLAYCtx, color: RGB, tileSize: number, grassTiles: TilePos[], key: string, health?: number) {
+        if (health !== null && health !== undefined) this.health = health;
         this.tileSize = tileSize;
         this.grassTiles = grassTiles;
 
@@ -21,6 +23,7 @@ export default class Character {
             k.body(),
             k.color(color),
             k.z(10),
+            key,
         ]);
     }
 
@@ -28,7 +31,7 @@ export default class Character {
         return this.character;
     }
 
-    public update(k: KaboomCtx, speed: number) {}
+    public update(k: KAPLAYCtx, speed: number) {}
 
     private generateRandomPosition(): TilePos {
         const randomIndex = Math.floor(Math.random() * this.grassTiles.length);
