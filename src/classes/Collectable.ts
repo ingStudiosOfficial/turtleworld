@@ -23,10 +23,24 @@ export default class Collectable {
             k.z(5),
             k.anchor('botleft'),
             k.area(),
-            k.offscreen({ hide: true, pause: true }),
+            //k.offscreen({ hide: true, pause: true }),
             key,
             'collectable',
         ]);
+
+        console.log(this.collectable);
+
+        // Manually handle visibility based on camera distance
+        this.collectable.onUpdate(() => {
+            const camPos = k.camPos();
+            const dist = this.collectable.pos.dist(camPos);
+
+            // Only show if within 1000 pixels (adjust as needed)
+            this.collectable.hidden = dist > 1000;
+            
+            // Optional: Pause logic to save even more CPU
+            this.collectable.paused = dist > 1000;
+        });
     }
 
     private generateRandomPosition(): TilePos {
