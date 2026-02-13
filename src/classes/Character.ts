@@ -5,7 +5,7 @@ import type { RGB } from "../theme/theme";
 
 export default class Character {
     protected character: GameObj;
-    public health = 100;
+    protected health = 100;
     protected tileSize: number;
     protected grassTiles: TilePos[];
 
@@ -29,6 +29,10 @@ export default class Character {
 
     public getCharacter(): GameObj {
         return this.character;
+    }
+
+    public getHealth(): number {
+        return this.health;
     }
 
     public update(k: KAPLAYCtx, speed: number) {}

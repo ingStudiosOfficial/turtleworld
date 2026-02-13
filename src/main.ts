@@ -5,6 +5,7 @@ import type { TilePos } from "./types/Tile";
 import Player from "./classes/Player";
 import Enemy from "./classes/Enemy";
 import NPC from "./classes/NPC";
+import { renderVisibleCollectables } from "./utils/collectable_utils";
 
 const k = kaplay();
 
@@ -38,7 +39,7 @@ for (let i = 0; i < 50; i++) new NPC(k, ColorTheme.secondary, tileSize, grassTil
 
 const healthLabel = k.add([
 	k.pos(100, 200),
-	k.text(`Health: ${player.health}`, {
+	k.text(`Health: ${player.getHealth()}`, {
 		size: 48,
 		font: 'sans-serif',
 	}),
@@ -47,9 +48,26 @@ const healthLabel = k.add([
 ]);
 
 healthLabel.onUpdate(() => {
-	healthLabel.text = `Health: ${player.health}`;
+	healthLabel.text = `Health: ${player.getHealth()}`;
+});
+
+const coinsLabel = k.add([
+	k.pos(100, 100),
+	k.text(`Coins: ${player.getCoins()}`, {
+		size: 48,
+		font: 'sans-serif',
+	}),
+	k.z(50),
+	k.fixed(),
+]);
+
+coinsLabel.onUpdate(() => {
+	coinsLabel.text = `Coins: ${player.getCoins()}`
 });
 
 k.onUpdate(() => {
 	renderVisibleTiles(k, tileSize, map);
+	renderVisibleCollectables(k, tileSize, map, grassTiles, (amount) => {
+		player.addCoins(amount);
+	});
 });
