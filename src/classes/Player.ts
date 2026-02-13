@@ -1,4 +1,4 @@
-import type { KAPLAYCtx } from "kaplay";
+import type { GameObj, KAPLAYCtx } from "kaplay";
 import Character from "./Character";
 import type { RGB } from "../theme/theme";
 import type { TilePos } from "../types/Tile";
@@ -22,6 +22,11 @@ export default class Player extends Character {
             this.health += 10;
             console.log('Health:', this.health);
         });
+        
+        this.character.onCollide('coin', (coin: GameObj) => {
+            this.addCoins(10);
+            k.destroy(coin);
+        });
 
         k.onUpdate(() => {
             if (!this.character.exists()) return;
@@ -35,7 +40,7 @@ export default class Player extends Character {
         return this.coins;
     }
 
-    public addCoins(amount: number) {
+    private addCoins(amount: number) {
         this.coins += amount;
     }
 

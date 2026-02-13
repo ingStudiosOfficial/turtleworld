@@ -5,7 +5,7 @@ import type { TilePos } from "./types/Tile";
 import Player from "./classes/Player";
 import Enemy from "./classes/Enemy";
 import NPC from "./classes/NPC";
-import { renderVisibleCollectables } from "./utils/collectable_utils";
+import Coin from "./classes/Coin";
 
 const k = kaplay();
 
@@ -29,6 +29,8 @@ for (const row of map) {
 	y += tileSize;
 }
 
+console.log("First grass tile pixel:", grassTiles[0]); 
+
 const speed = 300;
 
 const player = new Player(k, ColorTheme.primaryContainer, tileSize, grassTiles, speed);
@@ -36,6 +38,8 @@ const playerCharacter = player.getCharacter();
 
 for (let i = 0; i < 20; i++) new Enemy(k, ColorTheme.error, tileSize, grassTiles, 200, playerCharacter);
 for (let i = 0; i < 50; i++) new NPC(k, ColorTheme.secondary, tileSize, grassTiles, 100);
+
+for (let i = 0; i < 500; i++) new Coin(k, ColorTheme.primary, tileSize, grassTiles);
 
 const healthLabel = k.add([
 	k.pos(100, 200),
@@ -66,8 +70,5 @@ coinsLabel.onUpdate(() => {
 });
 
 k.onUpdate(() => {
-	renderVisibleTiles(k, tileSize, map);
-	renderVisibleCollectables(k, tileSize, map, grassTiles, (amount) => {
-		player.addCoins(amount);
-	});
+    renderVisibleTiles(k, tileSize, map);
 });

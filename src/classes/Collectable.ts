@@ -18,19 +18,15 @@ export default class Collectable {
 
         this.collectable = k.add([
             k.circle(this.tileSize / 4),
-            k.pos(spawnPosition[0] * this.tileSize, spawnPosition[1] * this.tileSize),
+            k.pos(spawnPosition[0], spawnPosition[1]),
             k.color(color),
             k.z(5),
             k.anchor('botleft'),
             k.area(),
-            k.body(),
+            k.offscreen({ hide: true, pause: true }),
             key,
             'collectable',
         ]);
-
-        this.collectable.onCollide('player', () => {
-            k.destroy(this.collectable);
-        });
     }
 
     private generateRandomPosition(): TilePos {

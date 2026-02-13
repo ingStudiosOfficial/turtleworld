@@ -65,34 +65,43 @@ export function determineColor(type: TileType): RGB {
 }
 
 export function renderVisibleTiles(k: KAPLAYCtx, tileSize: number, map: TileType[][]) {
+    const cam = k.camPos();
+    const halfW = k.width() / 2;
+    const halfH = k.height() / 2;
+
+    const startCol = Math.max(0, Math.floor((cam.x - halfW) / tileSize) - 1);
+    const endCol = Math.min(map[0].length, Math.ceil((cam.x + halfW) / tileSize) + 1);
+    const startRow = Math.max(0, Math.floor((cam.y - halfH) / tileSize) - 1);
+    const endRow = Math.min(map.length, Math.ceil((cam.y + halfH) / tileSize) + 1);
+
     k.destroyAll('tile');
 
-    const cam = k.camPos();
-    const screenWidth = k.width();
-    const screenHeight = k.height();
-
-    const startCol = Math.max(0, Math.floor((cam.x - screenWidth / 2) / tileSize) - 1);
-    const endCol = Math.min(map[0].length, Math.ceil((cam.x + screenWidth / 2) / tileSize) + 1);
-
-    const startRow = Math.max(0, Math.floor((cam.y - screenHeight / 2) / tileSize) - 1);
-    const endRow = Math.min(map.length, Math.ceil((cam.y + screenHeight / 2) / tileSize) + 1);
-
     for (let y = startRow; y < endRow; y++) {
+        const row = map[y];
         for (let x = startCol; x < endCol; x++) {
-            const tile = map[y][x];
-            const posX = x * tileSize;
-            const posY = y * tileSize;
+            const tile = row[x];
 
-            k.add([
-                k.pos(posX, posY),
+            const isTree = tile === TileType.Tree;
+            
+            if (isTree) k.add([
+                k.pos(x * tileSize, y * tileSize),
                 k.rect(tileSize, tileSize),
                 k.color(determineColor(tile)),
                 k.area(),
-                tile === TileType.Tree ? k.body({ isStatic: true }) : null,
-                'tile',
-                { type: tile }, 
                 k.z(1),
-            ].filter(Boolean));
+                'tile',
+                { type: tile },
+                k.body({ isStatic: true }),
+            ]);
+            else k.add([
+                k.pos(x * tileSize, y * tileSize),
+                k.rect(tileSize, tileSize),
+                k.color(determineColor(tile)),
+                k.area(),
+                k.z(1),
+                'tile',
+                { type: tile },
+            ]);
         }
     }
 }
